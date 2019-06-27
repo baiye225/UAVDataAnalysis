@@ -1,7 +1,7 @@
 This is a public code source which is shared by other sub-projects
 
-`DatabaseManager.m`
-It is a general manager for raw flight data, which helps the system to load specific data file and save the post processing result
+`DatabaseManager.m`<br> 
+\It is a general manager for raw flight data, which helps the system to load specific data file and save the post processing result
 
 `DrawCircleWaypoints.m`
 Generate waypoint circle around each waypoint
