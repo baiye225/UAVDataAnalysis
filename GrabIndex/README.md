@@ -1,4 +1,4 @@
-This file is used for grab index of start and end point of figure 8 flights
+This file is used for grabbing index of start and end point of figure 8 flights
 
 run main.m for single experiment (around 10 flights of each flight condition)
 
