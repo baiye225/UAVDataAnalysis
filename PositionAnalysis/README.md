@@ -1,0 +1,1 @@
+This project introdues a method of splitting flight path and calculating position error

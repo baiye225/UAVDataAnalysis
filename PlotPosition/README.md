@@ -1,0 +1,1 @@
+Plot all flight paths (around 10) of one flight condition in a figure 
