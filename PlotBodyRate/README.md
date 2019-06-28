@@ -8,10 +8,10 @@ customize DataType to pick up the desired kind of data (roll rate, pitch rate, o
 
 example:
 RollRate
-![image]()
+![image](https://github.com/baiye225/UAVDataAnalysis/blob/master/Image/RollRate.jpg)
 
 RollRate Zoom in
-![image]()
+![image](https://github.com/baiye225/UAVDataAnalysis/blob/master/Image/RollRateZoom.jpg)
 
 
 
