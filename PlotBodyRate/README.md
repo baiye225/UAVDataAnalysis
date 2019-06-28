@@ -6,11 +6,11 @@ customize struct value of num1, num2 to setup conditions of two experiments
 customize n1, n2 to pick specific flight of each experiment
 customize DataType to pick up the desired kind of data (roll rate, pitch rate, or yaw rate)
 
-example:
-RollRate
+example:<br>
+RollRate <br>
 ![image](https://github.com/baiye225/UAVDataAnalysis/blob/master/Image/RollRate.jpg)
 
-RollRate Zoom in
+RollRate Zoom in<br>
 ![image](https://github.com/baiye225/UAVDataAnalysis/blob/master/Image/RollRateZoom.jpg)
 
 
