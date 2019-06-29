@@ -9,8 +9,9 @@ All function is only for test with raw flight data and index data. The raw fligh
 
 run main.m in each folder to process single experiment. 
 
-run mainAll.m to process data of all flights
+run mainAll.m to process data of all flights <br>
 
+![image](https://github.com/baiye225/UAVDataAnalysis/blob/master/Image/Code%20Diagram.jpg)
 
 
 ## Grab Index
