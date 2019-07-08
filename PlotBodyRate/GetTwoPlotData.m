@@ -1,10 +1,10 @@
 % get two plot data
-function [BodyRate, MorphingTime] = GetTwoPlotData(data1, data2,...
+function [BodyRate, MorphingTime] = GetTwoPlotData(FlightType, data1, data2,...
                                                    DataFileNumber1, DataFileNumber2,...
                                                    IndexStruct)
 % get plot data
-[BodyRate1, MorphingTime1] = PreProsTwoData(data1, 'IMU', IndexStruct(1), DataFileNumber1);
-[BodyRate2, MorphingTime2] = PreProsTwoData(data2, 'IMU', IndexStruct(2), DataFileNumber2);
+[BodyRate1, MorphingTime1] = PreProsTwoData(FlightType, data1, 'IMU', IndexStruct(1), DataFileNumber1);
+[BodyRate2, MorphingTime2] = PreProsTwoData(FlightType, data2, 'IMU', IndexStruct(2), DataFileNumber2);
 
 % time adjustment
 [BodyRate1.time, BodyRate2.time, MorphingTime1, MorphingTime2] = ...
@@ -19,9 +19,10 @@ MorphingTime.MorphingTime2 = MorphingTime2;
 end
 
 % Pre process two data (body rate and morphing time)
-function [BodyRate, MorphingTime] = PreProsTwoData(data, DataType, IndexStruct, DataFileNumber)
-BodyRate     = PreProsData('AllStartEnd', data, DataType, IndexStruct, DataFileNumber);
-MorphingTime = PreProsData('MorphingStartEnd', data, DataType, IndexStruct, DataFileNumber);
+function [BodyRate, MorphingTime] = PreProsTwoData(FlightType, data, DataType, IndexStruct, DataFileNumber)
+
+BodyRate     = PreProsData('AllStartEnd', FlightType, data, DataType, IndexStruct, DataFileNumber);
+MorphingTime = PreProsData('MorphingStartEnd', FlightType, data, DataType, IndexStruct, DataFileNumber);
 end
 
 

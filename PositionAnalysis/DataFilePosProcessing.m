@@ -1,25 +1,27 @@
 
 % get the parameter of splitting method  based on num.WPi (["10", "15"])
-function Results = DataFilePosProcessing(num)
+function Results = DataFilePosProcessing(FlightType, num)
 
 % initialize paramaters of spillter based on the flight conditions(num)
-Name = DatabaseManager('FlightParameters');
-WP   = str2double(Name.wp(num.WPi));
-IndexStruct  = IndexManager('Single', 'AllStartEnd', num);
+Name       = DatabaseManager('FlightParameters');
+WP         = str2double(Name.wp(num.WPi));
+Flightpath = (Name.fp(num.FPi));
+
+IndexStruct  = IndexManager('Single', FlightType, 'AllStartEnd', num);
 CircleCenter = struct('Center1', [-5.2115, 0],...          
                       'Center2', [5.2115, 0]);
-S            = FigureEight(WP, CircleCenter);
+S            = FigureEight(Flightpath, WP, CircleCenter);
 SPi          = FigureEightSplitter(WP, CircleCenter);
 
                 
 % initialize result of the index
-DataSize = DatabaseManager('DataNumber', num); 
+DataSize = DatabaseManager('DataNumber', FlightType, num); 
 Results  = [];
 
 % calculate all datafile in the current datafolder
     for n = 1:1:DataSize
         % calculate position error of the current flight
-        PosError = ProsPosError(num, S, SPi, CircleCenter, IndexStruct, n);
+        PosError = ProsPosError(FlightType, num, S, SPi, CircleCenter, IndexStruct, n);
         
         % delete the wrong data (figure eight is incompleted)
         if size(PosError, 1) < WP * 2
@@ -35,12 +37,12 @@ Results = PostProsPosError(Results, WP);
 end
 
 % Process position and get position error
-function PosError = ProsPosError(num, S, SPi, CircleCenter, IndexStruct, n)
+function PosError = ProsPosError(FlightType, num, S, SPi, CircleCenter, IndexStruct, n)
 % load raw position data
-POS      = LoadData('POS', num, n); 
+POS      = LoadData('POS', FlightType, num, n); 
 
 % pre process data (grab data from index)
-GPS      = PreProsData('AllStartEnd', POS, 'POS', IndexStruct, n);
+GPS      = PreProsData('AllStartEnd', FlightType, POS, 'POS', IndexStruct, n);
 
 % GPS -> 2d coordinate system
 Position = GPS2POS([GPS.lat, GPS.lon]);

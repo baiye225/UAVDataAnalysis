@@ -9,12 +9,14 @@ function PlotPosMananger(request, input, input2, input3)
     switch request
         case 'FirgureSetup'
             % set up plot parameters of position
-            FigureSetupPos()
+            % input: plot dimention (eg: '2D', '3D')
+            FigureSetupPos(input)
             
         case 'FigureEight'
             % plot figure eight
-            % input: S
-            PlotFigureEight(input)
+            % input: dimention (eg: '2D', '3D')
+            % input2: figure eight data           
+            PlotFigureEight(input, input2)
             
         case 'WaypointsCircle'
             % plot waypoints circle
@@ -37,30 +39,52 @@ function PlotPosMananger(request, input, input2, input3)
             
         case 'Path'
             % plot whole flight path
-            % input:  Position
-            % input2: plot type
-            PlotPath(input, input2)
+            % input: dimention (eg: '2D', '3D')
+            % input2: Position
+            % input3: plot type
+            PlotPath(input, input2, input3)
+
     end
 
 end
 
 % 'FirgureSetup'
-function FigureSetupPos()
+function FigureSetupPos(Dimention)
 % set up plot parameters
 figure
 grid on
 grid minor
+xlabel('X (m)', 'FontSize', 14,'FontName',...
+       'Palatino Linotype','FontWeight','Bold')
+ylabel('Y (m)', 'FontSize', 14,'FontName',...
+       'Palatino Linotype','FontWeight','Bold')
 % title('Splitting method of flight path ')
-xlabel('X m')
-ylabel('Y m')
-axis([-15 15 -8 8])
+    switch Dimention
+        case '2D' 
+            axis([-15 15 -8 8])
+        case '3D'
+            axis([-15 15 -8 8 -2 11])
+            % add label of z axis
+            zlabel('Z (m)', 'FontSize', 14,'FontName',...
+                   'Palatino Linotype','FontWeight','Bold')      
+    end
+
+
 end
 
 % 'FigureEight'
-function PlotFigureEight(S)
+function PlotFigureEight(Dimension, S)
 % plot figure eight
 hold on
-plot(S(:,1), S(:,2), 'rx-')
+
+% choice of 2D plot or 3D plot
+    switch Dimension
+        case '2D'
+            plot(S(:,1), S(:,2), 'rx-')
+        case '3D'
+            plot3(S(:,1), S(:,2), S(:,3), 'rx-')
+    end
+    
 hold off
 end
 
@@ -112,14 +136,24 @@ hold off
 end
 
 % 'Path'
-function PlotPath(Position, type)
+function PlotPath(Dimension, Position, type)
 % plot flight path
 hold on
 x = Position(:, 1);
 y = Position(:, 2);
-plot(x, y, type, 'LineWidth', 2)
+
+% choice of 2D plot or 3D plot
+    switch Dimension
+        case '2D'
+            plot(x, y, type, 'LineWidth', 2)
+        case '3D'
+            z = Position(:, 3); % pick up z coordinate
+            plot3(x, y, z, type, 'LineWidth', 2)
+    end
+
 hold off
 end
+
 
 
 

@@ -17,7 +17,7 @@ function S = DrawCircleWaypoints(direction, CircleCenter, R, StartTheta, WP)
     end
     
 % initialize waypoint data and index
-S = zeros(WP + 1, 3);
+S = zeros(WP + 1, 2);
 n = 1;
 
 % draw circle waypoints
@@ -25,7 +25,7 @@ n = 1;
         theta = deg2rad(i);
         x = R * RoundThetaValue(cos(theta)) + CircleCenter(1);
         y = R * RoundThetaValue(sin(theta)) + CircleCenter(2);
-        S(n, :) = [x, y, 10];
+        S(n, :) = [x, y];
         n = n + 1;
     end
 

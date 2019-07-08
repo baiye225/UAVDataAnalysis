@@ -1,6 +1,6 @@
 
 % Pick data from data index
-function output = PreProsData(request, data, DataType,...
+function output = PreProsData(request, FlightType, data, DataType,...
                               IndexStruct, DataFileNumber)
 % <input>
 % request: the way to pre process the data (eg: AllStartEnd, MorphingStartEnd)
@@ -11,7 +11,7 @@ function output = PreProsData(request, data, DataType,...
     switch request
         case 'AllStartEnd'
             % pre process 'AllStartEnd' data
-            ProsData = PreProsAllStartEnd(data, DataType,...
+            ProsData = PreProsAllStartEnd(FlightType, data, DataType,...
                                        IndexStruct, DataFileNumber);
             output = ProsData;
             
@@ -25,11 +25,18 @@ function output = PreProsData(request, data, DataType,...
 end
 
 % pre process 'AllStartEnd' data
-function ProsData = PreProsAllStartEnd(data, DataType,...
+function ProsData = PreProsAllStartEnd(FlightType, data, DataType,...
                                        IndexStruct, DataFileNumber)
 % get index
-[IndexStart, IndexEnd] = PickIndex('AllStartEnd', DataType,...
-                                    IndexStruct, DataFileNumber);
+% if the flight is loiter test, then use all index (1 to end)
+    if strcmp(FlightType, 'FigureEight')
+        [IndexStart, IndexEnd] = PickIndex('AllStartEnd', DataType,...
+                                            IndexStruct, DataFileNumber);
+    elseif strcmp(FlightType, 'LoiterTest')
+        IndexStart = 1;
+        IndexEnd   = size(data(:, 1), 1);   
+    end
+    
 % grab and integrate data
 DataTypeIndex = DataKindIndex(DataType);
 ProsData      = StructData(data(IndexStart:IndexEnd,DataTypeIndex), DataType);                               
@@ -109,6 +116,8 @@ end
 function Data = StructData(data, DataType)
     switch DataType
         case 'IMU'
+            % converse unit (rad/s to degree/s)
+            data(:, 2:4) = rad2deg(data(:, 2:4));
             Data = struct('time', data(:,1), 'roll', data(:,2),...
                           'pitch', data(:,3), 'yaw', data(:,4));
         case 'POS'

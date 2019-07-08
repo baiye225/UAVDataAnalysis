@@ -1,6 +1,6 @@
 
 % plot two body rate
-function PlotTwoBodyRate(BodyRate, MorphingTime, DataType, FigureSetup)
+function PlotTwoBodyRate(BodyRate, MorphingTime, DataType, FigureSetup, num1, num2)
 
 % expand plot data
 BodyRate1 = BodyRate.BodyRate1;
@@ -21,13 +21,13 @@ Servo1 = PlotServo(BodyRate1.time, MorphingTime1, 'k-');
 Servo2 = PlotServo(BodyRate2.time, MorphingTime2, 'k--');
 
 % add morphing marker
-AddMorphingText(Servo1, FigureSetup)
+% AddMorphingText(Servo1, FigureSetup)
 
 
 % setup figure paramters
     switch FigureSetup
         case 'Normal'
-            FigureNormalSetup(DataType)
+            FigureNormalSetup(DataType, num1, num2)
         case 'Zoom'
             FigureZoomSetup(DataType)
     end
@@ -78,7 +78,7 @@ hold on
 Servo = GetServo(time, MorphingTime);
 x = Servo(:,1);
 y = Servo(:,2);
-plot(x, y, PlotType)
+plot(x, y, PlotType, 'LineWidth', 1.5)
 hold off
 end
 
@@ -99,7 +99,7 @@ function BodyRateAxisSetup()
 xlabel('Time (s)','FontSize',14,'FontName',...
     'Palatino Linotype','FontWeight','Bold')
 yyaxis left % left y axis is used for body rate
-ylabel('Body Rate (rad/s)','FontSize',14,'FontName',...
+ylabel('Body Rate (degree/s)','FontSize',14,'FontName',...
     'Palatino Linotype','FontWeight','Bold')
 end
 
@@ -107,17 +107,26 @@ end
 function ServoAxisSetup()
 yyaxis right % right y axis is used for servo
 axis([-inf inf -0.1 1.1]);                                 % range
-set(gca,'ytick',[0 1],'yticklabel',{'0', '1'},'FontSize',14,...
+set(gca,'ytick',[0 1],'yticklabel',{'', ''},'FontSize',14,...
     'FontWeight','Bold') % label
 end
 
 % setup other parameters
-function FigureNormalSetup(DataType)
+function FigureNormalSetup(DataType, num1, num2)
+% get the morphing angle
+Name  = DatabaseManager('FlightParameters');
+mrph1 = Name.mrph(num1.MRPHi);
+mrph2 = Name.mrph(num2.MRPHi);
+Degree1 = strcat(mrph1, '^{\circ}');
+Degree2 = strcat(mrph2, '^{\circ}');
+DegreeSwitch1 = strcat(mrph1, '^{\circ} Switch');
+DegreeSwitch2 = strcat(mrph2, '^{\circ} Switch');
+
 grid on; 
 grid minor;
-legend('21^{\circ}', '27^{\circ}', '21^{\circ} morphing', '27^{\circ} morphing')
+legend(Degree1, Degree2, DegreeSwitch1, DegreeSwitch2)
 TitleName = strcat('Comparison of ', " ", DataType, " ", 'rate');
-title(TitleName,'FontSize',14,'FontName',...
+title(TitleName,'FontSize',16,'FontName',...
     'Palatino Linotype','FontWeight','Bold');
 % Titile = strcat('comparison of ', DataType, 'between 21 and 27 morphing degree');
 % title(Titile)
@@ -128,7 +137,7 @@ function FigureZoomSetup(DataType)
 grid on; 
 grid minor;
 TitleName = strcat('Comparison of', " ", DataType, " ", 'rate');
-title(TitleName,'FontSize',14,'FontName',...
+title(TitleName,'FontSize',16,'FontName',...
     'Palatino Linotype','FontWeight','Bold');
 % Titile = strcat('comparison of ', DataType, 'between 21 and 27 morphing degree');
 % title(Titile)

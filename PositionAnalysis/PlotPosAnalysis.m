@@ -26,10 +26,10 @@ end
 function PlotDynamicPos(S, SPi, CircleCenter, Position, Index)
 
 % set up plot parameters of position
-PlotPosMananger('FirgureSetup')
+PlotPosMananger('FirgureSetup', '2D')
 
 % plot figure eight
-PlotPosMananger('FigureEight', S)      
+PlotPosMananger('FigureEight', '2D', S)      
 
 % plot slice pi and flight path of the 1st circle
 PlotPosMananger('SlicePi', SPi.SPi1, CircleCenter.Center1, 'k--')
@@ -51,13 +51,13 @@ end
 function PlotNormalPos(S, SPi, CircleCenter, Position)
 
 % set up plot parameters of position
-PlotPosMananger('FirgureSetup')
+PlotPosMananger('FirgureSetup', '2D')
 
 % plot flight path
-PlotPosMananger('Path', Position, 'b-')
+PlotPosMananger('Path', '2D', Position, 'b-')
 
 % plot figure eight and slice pi of two circles
-PlotPosMananger('FigureEight', S)
+PlotPosMananger('FigureEight', '2D', S)
 PlotPosMananger('SlicePi', SPi.SPi1, CircleCenter.Center1, 'k--')
 PlotPosMananger('SlicePi', SPi.SPi2, CircleCenter.Center2, 'k--') 
 

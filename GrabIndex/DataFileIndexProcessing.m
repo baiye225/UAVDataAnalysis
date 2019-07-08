@@ -1,6 +1,6 @@
 
 % process each experiment of flight (experiment * 10)
-function Results = DataFileIndexProcessing(request, num)
+function Results = DataFileIndexProcessing(FlightType, request, num)
 % <input>
 % request: the required kind of index (eg: 'AllStartEnd', 'MorphingStartEnd')
 % num:     flight condtion     
@@ -8,9 +8,9 @@ function Results = DataFileIndexProcessing(request, num)
 % Results: Point (Index of all experiments in a flight)
 
 % initialize data folder path (based on flight condition) and data size
-DataFolderPath = DatabaseManager('DataPath', num);   % (eg: ..\morphing test data (normal)\
-                                                     %  v1.5_wp10_morph0_normal)
-DataSize       = DatabaseManager('DataNumber', num); % (eg: 1.mat)
+DataFolderPath = DatabaseManager('DataPath', FlightType, num);   % (eg: ..\morphing test data (normal)\
+                                                                 %  v1.5_wp10_morph0_normal)
+DataSize       = DatabaseManager('DataNumber', FlightType, num); % (eg: 1.mat)
 
 % initialize result of the index
 Results = zeros(DataSize, 8);
@@ -24,7 +24,7 @@ Results = zeros(DataSize, 8);
         DataPATH = fullfile(DataFolderPath, datafile);
         
         % load current datafile and get the time point  
-        Results(n,:) = GetIndexResult(request, DataPATH);         % find start and end time from yaw        
+        Results(n,:) = GetIndexResult(request, DataPATH);  % find start and end time from yaw        
     end
 end
 

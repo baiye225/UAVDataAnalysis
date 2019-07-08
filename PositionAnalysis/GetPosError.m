@@ -68,7 +68,7 @@ D = zeros(n, 1);
     end
     
 % mean error
-result = sum(D.^2)/n;
+result = mean(D);
 
 end
 

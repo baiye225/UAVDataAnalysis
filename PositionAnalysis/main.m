@@ -11,8 +11,7 @@ path(path,'..\CodeBase\');
 
 %%%
 % initial parameters
-
-num               = struct('Vi', 1, 'WPi', 2, 'MRPHi', 2, 'FPi', 1);
+num               = struct('Vi', 1, 'WPi', 1, 'MRPHi', 2, 'FPi', 1);
                      % Vi    ["1.5", "2.5"]
                      % WPi   ["10", "15"]
                      % MRPHi ['0', '21', '27']
@@ -21,24 +20,28 @@ n = 3;               % pick flight in the current flight conditions (flight fold
 PathType = 'Normal'; % (eg: Normal, Dynamic)
 %%%
 
-% get the number of waypoints
-Name = DatabaseManager('FlightParameters');
-WP   = str2double(Name.wp(num.WPi));
+% get the flight type
+FlightType = 'FigureEight'; % (fixed value)
 
+% get the number of waypoints and flight path
+Name       = DatabaseManager('FlightParameters');
+WP         = str2double(Name.wp(num.WPi));
+Flightpath = (Name.fp(num.FPi));
 
 % load data
-POS          = LoadData('POS', num, n);                       % load raw data
-IndexStruct  = IndexManager('Single', 'AllStartEnd', num);    % load index of AllStartEnd
-CircleCenter = struct('Center1', [-5.2115, 0],...             % centers of two circles
+POS          = LoadData('POS', FlightType, num, n);       % load raw data
+IndexStruct  = IndexManager('Single', FlightType, ...     % load index of AllStartEnd
+                            'AllStartEnd', num);    
+CircleCenter = struct('Center1', [-5.2115, 0],...         % centers of two circles
                       'Center2', [5.2115, 0]);
                   
-S            = FigureEight(WP, CircleCenter);                 % figure eight path
-AllWPCircles = WPCircle(S);                                   % waypoints circle
-SPi          = FigureEightSplitter(WP, CircleCenter);         % figure eight slice pi
+S            = FigureEight(Flightpath, WP, CircleCenter);  % figure eight path
+AllWPCircles = WPCircle(S);                                % waypoints circle
+SPi          = FigureEightSplitter(WP, CircleCenter);      % figure eight slice pi
 
                   
 % pre process data (grab data from index)
-GPS = PreProsData('AllStartEnd', POS, 'POS', IndexStruct, n);
+GPS = PreProsData('AllStartEnd', FlightType, POS, 'POS', IndexStruct, n);
 
 % GPS -> 2d coordinate system
 Position = GPS2POS([GPS.lat, GPS.lon]);

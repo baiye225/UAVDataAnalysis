@@ -1,6 +1,6 @@
 
 % load required raw data
-function result = LoadData(DataKind, num, DataFileNumber)
+function result = LoadData(DataKind, FlightType, num, DataFileNumber)
 % <input>
 % DataKind      : the data kind in database (eg: 'GPS', 'POS', 'IMU')
 % num           : flight conditions 
@@ -9,7 +9,7 @@ function result = LoadData(DataKind, num, DataFileNumber)
 % result        : get required data from the current flight
 
 % get current data folder path (GeneralDataPath + FlightDataFolder)
-DataFolderPath = DatabaseManager('DataPath', num);
+DataFolderPath = DatabaseManager('DataPath', FlightType, num);
 
 % get current datafile name
 datafile = DatabaseManager('Datafile', DataFileNumber);
